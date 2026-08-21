@@ -1,0 +1,55 @@
+/* ==================================================================
+   Boot
+   ================================================================== */
+
+.boot {
+  position: absolute; inset: 0; z-index: 40;
+  display: grid; place-content: center; gap: 22px;
+  background: var(--void); padding: var(--gutter);
+  animation: bootIn 0.5s ease;
+}
+@keyframes bootIn { from { opacity: 0; } to { opacity: 1; } }
+.boot-mark { font-family: var(--mono); font-size: clamp(22px, 5vw, 40px); font-weight: 800; letter-spacing: 0.1em; }
+.boot-mark em { font-style: normal; color: var(--signal); }
+.boot-lines { display: grid; gap: 5px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; color: var(--dim); min-height: 108px; align-content: start; }
+.boot-lines b { color: var(--verify); font-weight: 700; }
+.boot-bar { height: 2px; background: rgba(190, 220, 232, 0.12); width: min(420px, 74vw); }
+.boot-bar i { display: block; height: 100%; background: var(--signal); transition: width 0.2s linear; }
+.boot-skip { justify-self: start; }
+
+/* ==================================================================
+   Gate (mode select)
+   ================================================================== */
+
+.gate {
+  position: absolute;
+  left: calc(max(var(--gutter), env(safe-area-inset-left)) + 42px);
+  bottom: clamp(52px, 9vh, 104px);
+  width: min(780px, calc(100vw - 96px));
+  pointer-events: auto; z-index: 2;
+}
+.gate h1 { font-size: clamp(44px, 7.4vw, 96px); margin: 12px 0 14px; letter-spacing: -0.05em; }
+.gate h1 em { font-style: normal; color: var(--signal); }
+.gate > p { color: var(--steel); max-width: 560px; line-height: 1.62; font-size: 15px; margin: 0; }
+.gate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 26px 0 18px; }
+.mode-card {
+  position: relative; border: 1px solid var(--line);
+  background: rgba(7, 12, 15, 0.72); color: var(--paper);
+  text-align: left; padding: 17px 16px 18px; cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: transform 0.24s cubic-bezier(0.2, 0.9, 0.2, 1), border-color 0.24s ease, background 0.24s ease;
+  overflow: hidden;
+}
+.mode-card::after {
+  content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+  background: var(--accent, var(--signal));
+  transition: width 0.36s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+.mode-card:hover, .mode-card.selected { transform: translateY(-4px); border-color: var(--accent, var(--signal)); background: rgba(12, 20, 25, 0.86); }
+.mode-card:hover::after, .mode-card.selected::after { width: 100%; }
+.mode-card small { display: block; font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; color: var(--accent, var(--signal)); margin-bottom: 26px; }
+.mode-card strong { display: block; font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+.mode-card span { display: block; color: var(--dim); margin-top: 7px; font-size: 12px; line-height: 1.5; }
+.gate-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.gate-foot .mono { color: var(--dim); }
+

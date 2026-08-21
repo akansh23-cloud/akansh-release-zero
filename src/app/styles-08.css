@@ -1,0 +1,51 @@
+/* ==================================================================
+   Toasts + command palette
+   ================================================================== */
+
+.toasts { position: absolute; right: var(--gutter); bottom: 42px; z-index: 50; display: grid; gap: 6px; justify-items: end; pointer-events: none; }
+.toast {
+  display: grid; grid-template-columns: 26px 1fr; gap: 11px; align-items: start;
+  width: min(320px, calc(100vw - 40px));
+  background: rgba(6, 11, 14, 0.96); border: 1px solid var(--line);
+  border-left: 2px solid var(--verify); padding: 13px 15px;
+  animation: toastIn 0.4s cubic-bezier(0.2, 0.9, 0.2, 1); backdrop-filter: blur(14px);
+}
+@keyframes toastIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+.toast i { font-style: normal; font-size: 16px; color: var(--verify); }
+.toast b { display: block; font-size: 13px; font-weight: 600; }
+.toast span { display: block; color: var(--dim); font-size: 11px; line-height: 1.5; margin-top: 3px; }
+.toast .mono { color: var(--verify); font-size: 7px; margin-bottom: 3px; display: block; }
+
+.palette-scrim { position: absolute; inset: 0; z-index: 60; background: rgba(3, 5, 8, 0.72); backdrop-filter: blur(6px); display: grid; place-items: start center; padding-top: 12vh; }
+.palette { width: min(560px, calc(100vw - 32px)); background: rgba(6, 11, 14, 0.98); border: 1px solid var(--line-strong); }
+.palette input { width: 100%; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 18px 20px; font-family: var(--mono); font-size: 13px; color: var(--paper); outline: none; }
+.palette ul { list-style: none; margin: 0; padding: 6px; max-height: 46vh; overflow-y: auto; }
+.palette li button {
+  width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  background: none; border: 0; padding: 12px 14px; cursor: pointer; text-align: left;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--steel);
+}
+.palette li button:hover, .palette li button.on { background: rgba(92, 225, 255, 0.09); color: var(--paper); }
+.palette li button span { color: var(--dim); font-size: 8px; }
+.palette-foot { border-top: 1px solid var(--line); padding: 10px 16px; font-family: var(--mono); font-size: 8px; color: var(--dim); letter-spacing: 0.1em; }
+
+/* ==================================================================
+   Fallback (no WebGL2)
+   ================================================================== */
+
+.fallback { position: absolute; inset: 0; overflow-y: auto; padding: clamp(30px, 7vw, 84px); background: var(--void); }
+.fallback h1 { font-size: clamp(42px, 9vw, 104px); margin: 20px 0 10px; letter-spacing: -0.05em; }
+.fallback h2 { font-weight: 500; color: var(--steel); font-size: clamp(15px, 2vw, 22px); margin: 0 0 18px; }
+.fallback p { max-width: 680px; color: var(--steel); line-height: 1.68; }
+.fallback nav { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.fallback nav a { color: var(--paper); text-decoration: none; border: 1px solid var(--line-strong); padding: 13px 17px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; }
+.fallback nav a:hover { border-color: var(--plasma); }
+
+html[data-webgl-lost='true']::after {
+  content: 'RENDERER RECOVERING';
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--void); color: var(--paper);
+  display: grid; place-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+}
+

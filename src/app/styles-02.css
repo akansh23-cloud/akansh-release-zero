@@ -1,0 +1,160 @@
+/* ==================================================================
+   Shell + console chrome
+   ================================================================== */
+
+.app-shell {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background: var(--void);
+  isolation: isolate;
+}
+
+.app-shell canvas { position: absolute !important; inset: 0; }
+
+/* Ambient vignette lives on its own layer beneath every UI surface. */
+.vignette {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 38%, transparent 34%, rgba(0, 0, 0, 0.34) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.42), transparent 18%, transparent 76%, rgba(0,0,0,0.5));
+}
+
+.chrome {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  padding:
+    max(14px, env(safe-area-inset-top))
+    max(var(--gutter), env(safe-area-inset-right))
+    max(14px, env(safe-area-inset-bottom))
+    max(var(--gutter), env(safe-area-inset-left));
+}
+
+.chrome::before, .chrome::after {
+  content: '';
+  position: absolute;
+  width: 22px; height: 22px;
+  border: 1px solid var(--line-strong);
+  pointer-events: none;
+}
+.chrome::before { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+.chrome::after { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+
+.topbar {
+  position: relative; z-index: 3;
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+}
+
+.brand {
+  pointer-events: auto;
+  display: flex; align-items: center; gap: 9px;
+  background: none; border: 0; cursor: pointer;
+  font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: 0.16em;
+  color: var(--paper); padding: 6px 0;
+}
+.brand small { color: var(--dim); font-weight: 600; letter-spacing: 0.12em; }
+.pulse-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 14px rgba(255, 90, 60, 0.9);
+  animation: beat 2.4s ease-in-out infinite;
+}
+@keyframes beat { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.42; transform: scale(0.78); } }
+
+.top-actions { display: flex; align-items: center; gap: 2px; pointer-events: auto; }
+.top-actions .ghost-btn.active { color: var(--plasma); }
+
+.menu-panel {
+  pointer-events: auto;
+  position: absolute; right: var(--gutter); top: 54px; width: 262px;
+  padding: 6px; background: rgba(4, 8, 11, 0.96);
+  border: 1px solid var(--line); backdrop-filter: blur(20px);
+  display: grid; gap: 2px; z-index: 20;
+}
+.menu-panel button {
+  border: 0; background: transparent; text-align: left; padding: 11px 12px;
+  cursor: pointer; font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.1em; color: var(--steel);
+  display: flex; justify-content: space-between; gap: 10px;
+}
+.menu-panel button:hover { background: rgba(92, 225, 255, 0.08); color: var(--paper); }
+.menu-panel button span { color: var(--dim); }
+.menu-panel hr { border: 0; border-top: 1px solid var(--line); margin: 5px 8px; }
+.menu-group { padding: 10px 12px 4px; font-family: var(--mono); font-size: 8px; letter-spacing: 0.16em; color: var(--dim); }
+.quality-row { display: flex; gap: 3px; padding: 0 8px 8px; }
+.quality-row button { flex: 1; justify-content: center; padding: 8px 4px; border: 1px solid var(--line); font-size: 8px; }
+.quality-row button.on { border-color: var(--plasma); color: var(--plasma); }
+
+/* ---------- the spine: signature element ---------- */
+
+.spine {
+  position: absolute;
+  left: max(var(--gutter), env(safe-area-inset-left));
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid; gap: 3px;
+  pointer-events: none; z-index: 2;
+}
+.spine-node {
+  display: grid; grid-template-columns: 18px auto; align-items: center; gap: 10px;
+  background: none; border: 0; padding: 5px 0; cursor: default;
+  font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--dim); text-align: left;
+}
+.spine-node i {
+  height: 2px; width: 12px; background: rgba(190, 220, 232, 0.18); display: block;
+  transition: width 0.4s cubic-bezier(0.2, 0.9, 0.2, 1), background 0.4s ease;
+}
+.spine-node span { opacity: 0; transform: translateX(-4px); transition: 0.28s ease; white-space: nowrap; }
+.spine:hover .spine-node span { opacity: 1; transform: none; }
+.spine-node.done i { width: 18px; background: var(--verify); }
+.spine-node.done { color: var(--steel); }
+.spine-node.current i { width: 26px; background: var(--signal); box-shadow: 0 0 12px rgba(255, 90, 60, 0.7); }
+.spine-node.current { color: var(--paper); }
+.spine-node.current span { opacity: 1; transform: none; }
+
+/* ---------- telemetry column ---------- */
+
+.telemetry {
+  position: absolute;
+  right: max(var(--gutter), env(safe-area-inset-right));
+  top: 62px; width: 224px; padding: 12px 13px;
+  background: var(--panel); border: 1px solid var(--line);
+  backdrop-filter: blur(14px); pointer-events: none;
+}
+.telemetry-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--mono); font-size: 7px; letter-spacing: 0.14em; color: var(--dim);
+  margin-bottom: 11px;
+}
+.telemetry-head b { color: var(--paper); font-size: 8px; }
+.telemetry-row {
+  display: grid; grid-template-columns: 76px 1fr 30px; gap: 8px; align-items: center;
+  margin: 6px 0; font-family: var(--mono); font-size: 7px; letter-spacing: 0.08em; color: var(--dim);
+}
+.telemetry-row i { height: 2px; background: rgba(190, 220, 232, 0.12); display: block; }
+.telemetry-row em { display: block; height: 100%; background: var(--plasma); transition: width 0.8s cubic-bezier(0.2, 0.9, 0.2, 1); }
+.telemetry-row b { text-align: right; color: var(--steel); }
+
+/* ---------- event ticker ---------- */
+
+.ticker {
+  position: absolute;
+  left: max(var(--gutter), env(safe-area-inset-left));
+  right: max(var(--gutter), env(safe-area-inset-right));
+  bottom: max(10px, env(safe-area-inset-bottom));
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; color: var(--dim);
+  pointer-events: none; border-top: 1px solid var(--line); padding-top: 8px;
+}
+.ticker-label { flex-shrink: 0; }
+.ticker-line { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ticker-line b { font-weight: 700; margin-right: 8px; }
+.ticker-line.ok b { color: var(--verify); }
+.ticker-line.warn b { color: var(--amber); }
+.ticker-line.err b { color: var(--signal); }
+.ticker-line.info b { color: var(--plasma); }
+.ticker-right { flex-shrink: 0; }
+

@@ -1,0 +1,113 @@
+/* ==================================================================
+   RELEASE//ZERO — operations console
+   Palette:  void / carbon / signal / plasma / verify / amber / violet
+   Display:  Space Grotesk     Utility: JetBrains Mono
+   ================================================================== */
+
+:root {
+  --void: #04060a;
+  --carbon: #0a1015;
+  --panel: rgba(8, 14, 18, 0.82);
+  --panel-solid: #080d11;
+  --line: rgba(190, 220, 232, 0.11);
+  --line-strong: rgba(190, 220, 232, 0.24);
+
+  --signal: #ff5a3c;
+  --plasma: #5ce1ff;
+  --verify: #4dffa0;
+  --amber: #ffb545;
+  --violet: #a682ff;
+  --steel: #8ea3ad;
+  --paper: #e9f4f8;
+  --dim: #5d6d75;
+
+  --display: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --gutter: clamp(16px, 3vw, 34px);
+
+  font-family: var(--display);
+  color: var(--paper);
+  background: var(--void);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--void);
+}
+
+body { overscroll-behavior: none; }
+button, input, a, select { font: inherit; color: inherit; }
+::selection { background: var(--signal); color: #120603; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(190, 220, 232, 0.18); }
+::-webkit-scrollbar-track { background: transparent; }
+
+:focus-visible { outline: 2px solid var(--plasma); outline-offset: 2px; }
+
+/* ---------- shared type primitives ---------- */
+
+.eyebrow, .mono {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+h1, h2, h3 { font-weight: 600; letter-spacing: -0.035em; line-height: 0.98; margin: 0; }
+
+kbd {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  padding: 3px 5px;
+  color: var(--paper);
+  background: rgba(255, 255, 255, 0.04);
+  margin-right: 5px;
+}
+
+.btn-primary, .btn-ghost, .btn-danger {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 13px 20px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+.btn-primary { background: var(--paper); color: #060a0c; }
+.btn-primary:hover { transform: translateY(-2px); background: #fff; }
+.btn-primary:disabled { opacity: 0.26; cursor: not-allowed; transform: none; }
+.btn-ghost { background: transparent; border-color: var(--line-strong); color: var(--paper); }
+.btn-ghost:hover { border-color: var(--plasma); background: rgba(92, 225, 255, 0.08); transform: translateY(-2px); }
+.btn-danger { background: var(--signal); color: #150502; }
+.btn-danger:hover { transform: translateY(-2px); filter: brightness(1.08); }
+
+.ghost-btn {
+  background: none; border: 0;
+  font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+  color: var(--steel); cursor: pointer; padding: 8px 10px;
+}
+.ghost-btn:hover { color: var(--paper); }
+
+.text-link {
+  background: none; border: 0; border-bottom: 1px solid var(--line-strong);
+  padding: 2px 0; cursor: pointer; color: var(--steel);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+}
+.text-link:hover { color: var(--paper); border-color: var(--plasma); }
+
